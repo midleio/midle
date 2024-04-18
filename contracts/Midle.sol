@@ -11,7 +11,7 @@ contract Midle is ERC20, ERC20Permit {
     
     uint256 public constant MAX_SUPPLY = 1000000000 * 10 ** 18; 
 
-    constructor() ERC20("MIDLE", "MDL") ERC20Permit("MIDLE") {
+    constructor() ERC20("MIDLE", "MIDLE") ERC20Permit("MIDLE") {
         _mint(msg.sender, MAX_SUPPLY);
     }
 
