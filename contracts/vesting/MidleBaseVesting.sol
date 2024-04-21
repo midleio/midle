@@ -34,8 +34,14 @@ contract MidleBaseVesting is ReentrancyGuard {
         uint256 totalClaimed;
     }
 
-    constructor(address _midleAddress, uint256 _tgeTimestamp, uint16 _tgeRate, 
-        uint256 _cliff, uint40 _rate, uint256 _vestingSupply ) {
+    constructor(
+        address _midleAddress, 
+        uint256 _tgeTimestamp, 
+        uint16 _tgeRate, 
+        uint256 _cliff, 
+        uint40 _rate, 
+        uint256 _vestingSupply 
+    ) {
 
         require (_midleAddress != address(0) , "Invalid address") ;
         midleTokenAddress = _midleAddress;
