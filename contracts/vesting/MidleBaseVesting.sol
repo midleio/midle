@@ -47,7 +47,7 @@ contract MidleBaseVesting is ReentrancyGuard {
         midleTokenAddress = _midleAddress;
 
         tgeTimestamp = _tgeTimestamp;
-        lockStartTime = _tgeTimestamp + (_cliff * 30 days) - 1 days;
+        lockStartTime = _tgeTimestamp + (_cliff * 30 days) - period;
 
         maxTokensToLock = _vestingSupply;
         setReleaseInfo(_rate, _tgeRate);
@@ -106,6 +106,8 @@ contract MidleBaseVesting is ReentrancyGuard {
     
     function getNextVestingInfo (address _user) public view returns(uint256 nextVestingTime, 
     uint256 nextTotalVestingAmount, uint256 totalAmount, uint256 claimedSoFar, uint256 claimableAmountNow) {
+
+        require(_user != address(0), "Wrong address");
 
         LockInfo memory info = userToLockInfo[_user];
         uint256 tgeTokenAmount = info.totalAmount * tgeRate / tgeBaseRate;
