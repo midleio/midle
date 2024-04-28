@@ -4,12 +4,12 @@
 */
 pragma solidity ^0.8.17;
 
-import {MidleBaseVesting} from "./MidleBaseClaim.sol";
+import {MidleBaseClaim} from "./MidleBaseClaim.sol";
 
 /// @title SeedClaim
 /// @dev Implements a token vesting mechanism where tokens are locked and released linearly over time.
 /// @notice This contract is used to manage the vesting of tokens, allowing users to claim their vested tokens over a period.
-contract SeedClaim is MidleBaseVesting {
+contract SeedClaim is MidleBaseClaim {
 
     /// @notice Constructor to initialize. Total claim amount is 75,000,000 MIDLE.
     /// @dev The constructor takes MIDLE contract address and TGE.
@@ -18,7 +18,7 @@ contract SeedClaim is MidleBaseVesting {
     /// @param _tgeTimestamp TGE timestamp of the associated Vesting contract
     constructor(address _midleAddress, uint256 _tgeTimestamp )
 
-        MidleBaseVesting(_midleAddress, 
+        MidleBaseClaim(_midleAddress, 
         _tgeTimestamp,
         500,
         2,

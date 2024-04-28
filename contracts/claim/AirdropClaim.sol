@@ -9,7 +9,7 @@ import {MidleBaseVesting} from "./MidleBaseClaim.sol";
 /// @title AirdropClaim
 /// @dev Implements a token vesting mechanism where tokens are locked and released linearly over time.
 /// @notice This contract is used to manage the vesting of tokens, allowing users to claim their vested tokens over a period.
-contract AirdropClaim is MidleBaseVesting {
+contract AirdropClaim is MidleBaseClaim {
 
     /// @notice Constructor to initialize. Total claim amount is 20,000,000 MIDLE.
     /// @dev The constructor takes MIDLE contract address and TGE.
@@ -18,7 +18,7 @@ contract AirdropClaim is MidleBaseVesting {
     /// @param _tgeTimestamp TGE timestamp of the associated Vesting contract
     constructor(address _midleAddress, uint256 _tgeTimestamp )
 
-        MidleBaseVesting(_midleAddress, 
+        MidleBaseClaim(_midleAddress, 
         _tgeTimestamp,
         0,
         0,
