@@ -61,6 +61,8 @@ contract MidleBaseVesting is ReentrancyGuard {
     }
 
     function lockTokens(address _user, uint256 _amt) internal { 
+        require(_user != address(0), "Invalid address.");
+        require(_amt != 0 , "Invalid amount.");
         LockInfo storage info = userToLockInfo[_user];
         info.totalAmount += _amt;
         totalLocked += _amt;
