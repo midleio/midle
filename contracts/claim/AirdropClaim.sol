@@ -4,7 +4,7 @@
 */
 pragma solidity ^0.8.17;
 
-import {MidleBaseVesting} from "./MidleBaseClaim.sol";
+import {MidleBaseClaim} from "./MidleBaseClaim.sol";
 
 /// @title AirdropClaim
 /// @dev Implements a token vesting mechanism where tokens are locked and released linearly over time.
