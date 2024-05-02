@@ -21,8 +21,8 @@ contract CommunityRewardsVesting is MidleBaseVesting {
 
         MidleBaseVesting(_midleAddress, 
         _tgeTimestamp,
-        170,
         0,
+        1,
         12000000,
         300000000 * 10 ** 18
         ) {

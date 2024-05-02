@@ -20,7 +20,7 @@ contract PrivateClaim is MidleBaseClaim {
 
         MidleBaseClaim(_midleAddress, 
         _tgeTimestamp,
-        1000,
+        800,
         1,
         72000000,
         100000000 * 10 ** 18

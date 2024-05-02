@@ -23,7 +23,7 @@ contract SeedClaim is MidleBaseClaim {
         500,
         2,
         60000000,
-        75000000 * 10 ** 18
+        95000000 * 10 ** 18
         ) {}
 
     

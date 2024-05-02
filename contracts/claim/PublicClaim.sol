@@ -23,7 +23,7 @@ contract PublicClaim is MidleBaseClaim {
         1500,
         0,
         120000000,
-        80000000 * 10 ** 18
+        60000000 * 10 ** 18
         ) {}
 
     

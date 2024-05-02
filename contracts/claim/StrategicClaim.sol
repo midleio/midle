@@ -20,7 +20,7 @@ contract StrategicClaim is MidleBaseClaim {
 
         MidleBaseClaim(_midleAddress, 
         _tgeTimestamp,
-        1000,
+        900,
         1,
         90000000,
         25000000 * 10 ** 18
