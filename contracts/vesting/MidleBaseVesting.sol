@@ -47,7 +47,7 @@ contract MidleBaseVesting is ReentrancyGuard {
         midleTokenAddress = _midleAddress;
 
         tgeTimestamp = _tgeTimestamp;
-        lockStartTime = _tgeTimestamp + (_cliff * 30 days) - period;
+        lockStartTime = _tgeTimestamp + (_cliff * 30 days);
 
         maxTokensToLock = _vestingSupply;
         setReleaseInfo(_rate, _tgeRate);
