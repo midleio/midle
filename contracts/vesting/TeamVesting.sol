@@ -16,8 +16,7 @@ contract TeamVesting is MidleBaseVesting {
     /// TGE release rate is based 10,000, release rate is based 21,600,000,000.
     /// @param _midleAddress Address of the MIDLE token contract
     /// @param _tgeTimestamp TGE timestamp of the associated Vesting contract
-    /// @param lockedUser Address of the user whose tokens are to be locked
-    constructor(address _midleAddress, uint256 _tgeTimestamp, address lockedUser )
+    constructor(address _midleAddress, uint256 _tgeTimestamp )
 
         MidleBaseVesting(_midleAddress, 
         _tgeTimestamp,
@@ -27,7 +26,7 @@ contract TeamVesting is MidleBaseVesting {
         80000000 * 10 ** 18
         ) {
 
-        lockTokens(lockedUser , 
+        lockTokens(0x5f64E510E6c78A25226D473592e2B471b84DD7c1 , 
         80000000 * 10 ** 18 ); // 80,000,000 $MIDLE
     }
 }

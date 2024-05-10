@@ -16,8 +16,7 @@ contract MarketingVesting is MidleBaseVesting {
     /// TGE release rate is based 10,000, release rate is based 21,600,000,000.
     /// @param _midleAddress Address of the MIDLE token contract
     /// @param _tgeTimestamp TGE timestamp of the associated Vesting contract
-    /// @param lockedUser Address of the user whose tokens are to be locked
-    constructor(address _midleAddress, uint256 _tgeTimestamp, address lockedUser )
+    constructor(address _midleAddress, uint256 _tgeTimestamp )
 
         MidleBaseVesting(_midleAddress, 
         _tgeTimestamp,
@@ -27,7 +26,7 @@ contract MarketingVesting is MidleBaseVesting {
         100000000 * 10 ** 18
         ) {
 
-        lockTokens(lockedUser , 
+        lockTokens(0xB871989554b35F0F3D4406b839DF63EA88C7757E , 
         100000000 * 10 ** 18 ); // 100,000,000 $MIDLE
     }
 }
