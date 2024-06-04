@@ -5,7 +5,8 @@ const { writeClaims } = require('./writeClaims.js');
 async function main() {
     
     const tgeTimestamp = Date.parse("01 Jun 2024 00:00:00 GMT") / 1000;
-    const airdropTgeTimestamp = Date.parse("02 Jun 2024 00:00:00 GMT") / 1000;
+    const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60;
+    const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60;
 
     const tokenAllocations = {
         advisor: 40 * 10 ** 6,
@@ -44,12 +45,12 @@ async function main() {
 
     // Deploy Claims
 
-    const [airdropClaim , airdropClaimAddress] = await deployVestingContract("AirdropClaim", midleTokenAddress, airdropTgeTimestamp);
-    const [kolClaim , kolClaimAddress] = await deployVestingContract("KolClaim", midleTokenAddress, tgeTimestamp);
-    const [privateClaim , privateClaimAddress] = await deployVestingContract("PrivateClaim", midleTokenAddress, tgeTimestamp);
-    const [publicClaim , publicClaimAddress] = await deployVestingContract("PublicClaim", midleTokenAddress, tgeTimestamp);
-    const [seedClaim , seedClaimAddress] = await deployVestingContract("SeedClaim", midleTokenAddress, tgeTimestamp);
-    const [strategicClaim , strategicClaimAddress] = await deployVestingContract("StrategicClaim", midleTokenAddress, tgeTimestamp);
+    const [airdropClaim , airdropClaimAddress] = await deployVestingContract("AirdropClaim", midleTokenAddress, tgePlus30MinutesTimestamp);
+    const [kolClaim , kolClaimAddress] = await deployVestingContract("KolClaim", midleTokenAddress, tgePlus15MinutesTimestamp);
+    const [privateClaim , privateClaimAddress] = await deployVestingContract("PrivateClaim", midleTokenAddress, tgePlus30MinutesTimestamp);
+    const [publicClaim , publicClaimAddress] = await deployVestingContract("PublicClaim", midleTokenAddress, tgePlus15MinutesTimestamp);
+    const [seedClaim , seedClaimAddress] = await deployVestingContract("SeedClaim", midleTokenAddress, tgePlus30MinutesTimestamp);
+    const [strategicClaim , strategicClaimAddress] = await deployVestingContract("StrategicClaim", midleTokenAddress, tgePlus30MinutesTimestamp);
 
     console.log("\n\nClaim deployments are done!\n\n");
 
