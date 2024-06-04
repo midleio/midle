@@ -5,7 +5,7 @@ const { writeClaims } = require('./writeClaims.js');
 let allAddresses= {};
 async function main() {
     
-    const tgeTimestamp = Date.parse("01 Jun 2024 00:00:00 GMT") / 1000;
+    const tgeTimestamp = Date.parse("01 Jul 2024 00:00:00 GMT") / 1000;
     const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60;
     const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60;
 

@@ -115,26 +115,28 @@ contract MidleBaseVesting is ReentrancyGuard {
         uint256 tgeTokenAmount = info.totalAmount * tgeRate / tgeBaseRate;
         uint256 _timestamp = block.timestamp;
 
-        if (info.totalAmount > 0) {
-            if (_timestamp < tgeTimestamp ) {
-                return (tgeTimestamp, tgeTokenAmount, info.totalAmount, info.totalClaimed, 0);
-            } else {
-                uint256 claimable = getClaimable(_user);
-                uint256 timePassed;
-
-                _timestamp < lockStartTime ? timePassed = 0 : 
-                timePassed = _timestamp - lockStartTime;
-
-                uint256 periodsPassed = timePassed / period;
-                uint256 nextPeriodCount = periodsPassed + 1;
-                uint256 nextVestingTimestamp = lockStartTime + (nextPeriodCount * period);
-                uint256 nextTotalAmount = ((info.totalAmount - tgeTokenAmount) * nextPeriodCount * releaseRate / baseRate) 
-                + tgeTokenAmount;
-                
-                return (nextVestingTimestamp, nextTotalAmount , info.totalAmount, info.totalClaimed, claimable) ;
-            }
-        } else {
+        if (info.totalAmount == 0) {
             return (0, 0, 0, 0, 0) ;
+        }
+
+        if (_timestamp < tgeTimestamp ) { 
+            uint256 claimTimestamp = tgeTokenAmount > 0 ? tgeTimestamp : lockStartTime + period;
+            uint256 fistClaimable = tgeTokenAmount > 0 ? tgeTokenAmount : info.totalAmount * releaseRate / baseRate;
+            return (claimTimestamp, fistClaimable, info.totalAmount, info.totalClaimed, 0) ;
+        } else {
+            uint256 claimable = getClaimable(_user);
+            uint256 timePassed;
+
+            _timestamp < lockStartTime ? timePassed = 0 : 
+            timePassed = _timestamp - lockStartTime;
+
+            uint256 periodsPassed = timePassed / period;
+            uint256 nextPeriodCount = periodsPassed + 1;
+            uint256 nextVestingTimestamp = lockStartTime + (nextPeriodCount * period);
+            uint256 nextTotalAmount = ((info.totalAmount - tgeTokenAmount) * nextPeriodCount * releaseRate / baseRate) 
+            + tgeTokenAmount;
+                
+            return (nextVestingTimestamp, nextTotalAmount , info.totalAmount, info.totalClaimed, claimable) ;
         }
     }
 
