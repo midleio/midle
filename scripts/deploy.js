@@ -2,6 +2,7 @@ const hre = require("hardhat");
 const { writeClaims } = require('./writeClaims.js');
 
 
+let allAddresses= {};
 async function main() {
     
     const tgeTimestamp = Date.parse("01 Jun 2024 00:00:00 GMT") / 1000;
@@ -23,8 +24,42 @@ async function main() {
         strategic: 25 * 10 ** 6
     };
   
+    const vestingReceivers = {
+        advisorAddress: {
+            address : "0x4B7f6bc11e392Ed82913E01fA9B0488770668a59",
+            tgeAmount: tokenAllocations.advisor * 0 / 100, // 0%
+            lockAmount: tokenAllocations.advisor - tokenAllocations.advisor * 0 / 100,  // 100%
+        },
+        communityRewardsAddress: {
+            address : "0x8cA38aC9C38C87896A8eFa65e6eacc9dbdCE78ec",
+            tgeAmount: tokenAllocations.communityRewards * 0 / 100, // 0%
+            lockAmount: tokenAllocations.communityRewards - tokenAllocations.communityRewards * 0 / 100, // 100%
+        },
+        liquidityAddress: {
+            address : "0xDFfb0b8c75ecCBdaB76Af41077addf6366d51bb1",
+            tgeAmount: tokenAllocations.liquidity * 20 / 100, // 20%
+            lockAmount: tokenAllocations.liquidity - tokenAllocations.liquidity * 20 / 100, // 80%
+        },
+        marketingAddress: {
+            address : "0xB871989554b35F0F3D4406b839DF63EA88C7757E",
+            tgeAmount: tokenAllocations.marketing * 0 / 100, // 0%
+            lockAmount: tokenAllocations.marketing - tokenAllocations.marketing * 0 / 100, // 100%
+        },
+        teamAddress: {
+            address : "0x5f64E510E6c78A25226D473592e2B471b84DD7c1",
+            tgeAmount: tokenAllocations.team * 0 / 100, // 0%
+            lockAmount: tokenAllocations.team - tokenAllocations.team * 0 / 100, // 100%
+        },
+        treasuryAddress: {
+            address : "0xFfA55B79e8475Ae276F83f17c559B74bEBf7d6CC",
+            tgeAmount: tokenAllocations.treasury * 0 / 100, // 0%
+            lockAmount: tokenAllocations.treasury - tokenAllocations.treasury * 0 / 100, // 100%
+        },
+    }; 
+
     const [deployer] = await hre.ethers.getSigners();
     console.log("Deploying contracts with the account:", deployer.address, "\n\n");
+    allAddresses['deployer'] = deployer.address;
 
     // Deploy token contract
     const midle = await hre.ethers.deployContract("Midle");
@@ -34,12 +69,12 @@ async function main() {
 
     // Deploy Vestings
 
-    const [advisorVesting , advisorVestingAddress] = await deployVestingContract("AdvisorVesting", midleTokenAddress, tgeTimestamp);
-    const [communityRewardsVesting , communityRewardsVestingAddress] = await deployVestingContract("CommunityRewardsVesting", midleTokenAddress, tgeTimestamp);
-    const [liquidityVesting , liquidityVestingAddress] = await deployVestingContract("LiquidityVesting", midleTokenAddress, tgeTimestamp);
-    const [marketingVesting , marketingVestingAddress] = await deployVestingContract("MarketingVesting", midleTokenAddress, tgeTimestamp);
-    const [teamVesting , teamVestingAddress] = await deployVestingContract("TeamVesting", midleTokenAddress, tgeTimestamp);
-    const [treasuryVesting , treasuryVestingAddress] = await deployVestingContract("TreasuryVesting", midleTokenAddress, tgeTimestamp);
+    [vestingReceivers.advisorAddress.contract , advisorVestingAddress] = await deployVestingContract("AdvisorVesting", midleTokenAddress, tgeTimestamp);
+    [vestingReceivers.communityRewardsAddress.contract , communityRewardsVestingAddress] = await deployVestingContract("CommunityRewardsVesting", midleTokenAddress, tgeTimestamp);
+    [vestingReceivers.liquidityAddress.contract , liquidityVestingAddress] = await deployVestingContract("LiquidityVesting", midleTokenAddress, tgeTimestamp);
+    [vestingReceivers.marketingAddress.contract , marketingVestingAddress] = await deployVestingContract("MarketingVesting", midleTokenAddress, tgeTimestamp);
+    [vestingReceivers.teamAddress.contract , teamVestingAddress] = await deployVestingContract("TeamVesting", midleTokenAddress, tgeTimestamp);
+    [vestingReceivers.treasuryAddress.contract , treasuryVestingAddress] = await deployVestingContract("TreasuryVesting", midleTokenAddress, tgeTimestamp);
 
     console.log("\n\nVesting deployments are done!\n\n");
 
@@ -54,22 +89,34 @@ async function main() {
 
     console.log("\n\nClaim deployments are done!\n\n");
 
-    // Transfer tokens to the contracts
+    // Transfer tokens to the vesting contracts
 
-    await midle.connect(deployer).transfer(advisorVestingAddress, parse(tokenAllocations.advisor));
+    await midle.connect(deployer).transfer(advisorVestingAddress, parse(tokenAllocations.advisor - vestingReceivers.advisorAddress.tgeAmount));
     console.log("Advisor tokens transferred!");
-    await midle.connect(deployer).transfer(communityRewardsVestingAddress, parse(tokenAllocations.communityRewards));
+    await midle.connect(deployer).transfer(communityRewardsVestingAddress, parse(tokenAllocations.communityRewards - vestingReceivers.communityRewardsAddress.tgeAmount));
     console.log("Community Rewards tokens transferred!");
-    await midle.connect(deployer).transfer(liquidityVestingAddress, parse(tokenAllocations.liquidity));
+    await midle.connect(deployer).transfer(liquidityVestingAddress, parse(tokenAllocations.liquidity - vestingReceivers.liquidityAddress.tgeAmount));
     console.log("Liquidity tokens transferred!");
-    await midle.connect(deployer).transfer(marketingVestingAddress, parse(tokenAllocations.marketing));
+    await midle.connect(deployer).transfer(marketingVestingAddress, parse(tokenAllocations.marketing - vestingReceivers.marketingAddress.tgeAmount));
     console.log("Marketing tokens transferred!");
-    await midle.connect(deployer).transfer(teamVestingAddress, parse(tokenAllocations.team));
+    await midle.connect(deployer).transfer(teamVestingAddress, parse(tokenAllocations.team - vestingReceivers.teamAddress.tgeAmount));
     console.log("Team tokens transferred!");
-    await midle.connect(deployer).transfer(treasuryVestingAddress, parse(tokenAllocations.treasury));
-    console.log("Treasury tokens transferred!");
+    await midle.connect(deployer).transfer(treasuryVestingAddress, parse(tokenAllocations.treasury - vestingReceivers.treasuryAddress.tgeAmount));
+    console.log("Treasury tokens transferred!\n\n");
+
+    // Transfer TGE tokens to the related addresses if there is any
+
+    for (const [key, value] of Object.entries(vestingReceivers)) {
+        allAddresses[key] = value.address;
+        if (value.tgeAmount == 0) continue;
+        await midle.connect(deployer).transfer(value.address, parse(value.tgeAmount));
+        console.log(key + " TGE tokens transferred!");
+    }
+
+    // Transfer tokens to the claim contracts
+
     await midle.connect(deployer).transfer(airdropClaimAddress, parse(tokenAllocations.airdrop));
-    console.log("Airdrop tokens transferred!");
+    console.log("\n\nAirdrop tokens transferred!");
     await midle.connect(deployer).transfer(kolClaimAddress, parse(tokenAllocations.kol));
     console.log("Kol tokens transferred!");
     await midle.connect(deployer).transfer(privateClaimAddress, parse(tokenAllocations.private));
@@ -83,39 +130,12 @@ async function main() {
 
     console.log("\n\nTransfers are done!\n\n");
 
-    await Promise.all([
-        midle.balanceOf(advisorVestingAddress),
-        midle.balanceOf(communityRewardsVestingAddress),
-        midle.balanceOf(liquidityVestingAddress),
-        midle.balanceOf(marketingVestingAddress),
-        midle.balanceOf(teamVestingAddress),
-        midle.balanceOf(treasuryVestingAddress),
-        midle.balanceOf(airdropClaimAddress),
-        midle.balanceOf(kolClaimAddress),
-        midle.balanceOf(privateClaimAddress),
-        midle.balanceOf(publicClaimAddress),
-        midle.balanceOf(seedClaimAddress),
-        midle.balanceOf(strategicClaimAddress),
-        midle.balanceOf(deployer.address)
-    ]).then((values) => {
-        console.log("Balance of advisorVesting:", ethers.formatEther(values[0].toString()));
-        console.log("Balance of communityRewardsVesting:", ethers.formatEther(values[1].toString()));
-        console.log("Balance of liquidityVesting:", ethers.formatEther(values[2].toString()));
-        console.log("Balance of marketingVesting:", ethers.formatEther(values[3].toString()));
-        console.log("Balance of teamVesting:", ethers.formatEther(values[4].toString()));
-        console.log("Balance of treasuryVesting:", ethers.formatEther(values[5].toString()));
-        console.log("Balance of airdropClaim:", ethers.formatEther(values[6].toString()));
-        console.log("Balance of kolClaim:", ethers.formatEther(values[7].toString()));
-        console.log("Balance of privateClaim:", ethers.formatEther(values[8].toString()));
-        console.log("Balance of publicClaim:", ethers.formatEther(values[9].toString()));
-        console.log("Balance of seedClaim:", ethers.formatEther(values[10].toString()));
-        console.log("Balance of strategicClaim:", ethers.formatEther(values[11].toString()));
-        console.log("Balance of deployer:", ethers.formatEther(values[12].toString()));
-    }
-    );
+    await seeBalances(midle , allAddresses);
 
     // Enter claim lists to the contracts
 
+    console.log("\n\nWriting claims to contracts...\n\n");
+    
     await writeClaims(deployer , seedClaim , 'seed');
     await writeClaims(deployer , strategicClaim , 'strategic');
     await writeClaims(deployer , privateClaim , 'private');
@@ -133,8 +153,22 @@ async function deployVestingContract(contractName, tokenAddress, tgeTimestamp) {
     const contract = await hre.ethers.deployContract(contractName, [tokenAddress, tgeTimestamp]);
     await contract.waitForDeployment();
     const contractAddress = await contract.getAddress();
+    allAddresses[contractName] = contractAddress;
     console.log(contractName + " deployed to:", contractAddress);
     return [contract , contractAddress];
+}
+
+async function seeBalances(token , addresses) {
+    let total = 0;
+    await Promise.all(
+        Object.entries(addresses).map(async ([key, value]) => {
+            let balance = await token.balanceOf(value);
+            balance = ethers.formatEther(balance.toString());
+            total += Number(balance);
+            console.log("Balance of", key, ":", balance);
+        })
+    );
+    console.log("Total balance of all addresses:", total.toString());
 }
 
 async function seeDeployer() {
