@@ -11,8 +11,8 @@ contract MidleBaseVesting is ReentrancyGuard {
 
     uint40 public releaseRate;
     uint16 public tgeRate;
-    uint256 public lockStartTime;
-    uint256 public tgeTimestamp;
+    uint256 public immutable lockStartTime;
+    uint256 public immutable tgeTimestamp;
     uint256 public totalLocked;
     uint16 constant tgeBaseRate = 10000;
     uint40 constant baseRate = 21600000000; // 720 * 30 * 1,000,000
