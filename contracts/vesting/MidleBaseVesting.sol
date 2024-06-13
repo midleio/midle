@@ -2,12 +2,14 @@
 pragma solidity ^0.8.17;
 
 import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /// @title MidleBaseVesting
 /// @dev Manages token vesting with linear release after a cliff, utilizing events and errors for state changes and conditions.
 /// @notice Allows to lock tokens and claim them based on a predefined vesting schedule after a cliff period post-TGE.
 contract MidleBaseVesting is ReentrancyGuard {
+    using SafeERC20 for IERC20;
 
     uint40 public releaseRate;
     uint16 public tgeRate;
@@ -102,7 +104,7 @@ contract MidleBaseVesting is ReentrancyGuard {
         LockInfo storage info = userToLockInfo[msg.sender];
         info.totalClaimed = info.totalClaimed + claimable;
         IERC20 midle = IERC20(midleTokenAddress);
-        midle.transfer(msg.sender, claimable);
+        midle.safeTransfer(msg.sender, claimable);
         emit Claimed(msg.sender, block.timestamp, claimable, info.totalClaimed, info.totalAmount);
     }
     
