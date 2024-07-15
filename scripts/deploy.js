@@ -1,6 +1,6 @@
 const hre = require("hardhat");
 const { writeClaims } = require('./writeClaims.js');
-
+const deployedMidleAddress = "";
 
 let allAddresses= {};
 async function main() {
@@ -62,8 +62,15 @@ async function main() {
     allAddresses['deployer'] = deployer.address;
 
     // Deploy token contract
-    const midle = await hre.ethers.deployContract("Midle");
-    await midle.waitForDeployment();
+    let midle ;
+
+    if (deployedMidleAddress == "") {
+        midle = await hre.ethers.deployContract("Midle");
+        await midle.waitForDeployment();
+    } else {
+        midle = await hre.ethers.getContractAt("Midle", deployedMidleAddress , deployer);
+    }
+    
     const midleTokenAddress = await midle.getAddress();
     console.log("Midle Token deployed to:", midleTokenAddress , "\n\n");
 
