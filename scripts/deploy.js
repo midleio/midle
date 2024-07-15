@@ -37,8 +37,8 @@ async function main() {
         },
         liquidityAddress: {
             address : "0xDFfb0b8c75ecCBdaB76Af41077addf6366d51bb1",
-            tgeAmount: tokenAllocations.liquidity * 20 / 100, // 20%
-            lockAmount: tokenAllocations.liquidity - tokenAllocations.liquidity * 20 / 100, // 80%
+            tgeAmount: tokenAllocations.liquidity * 25 / 100, // 25%
+            lockAmount: tokenAllocations.liquidity - tokenAllocations.liquidity * 25 / 100, // 75%
         },
         marketingAddress: {
             address : "0xB871989554b35F0F3D4406b839DF63EA88C7757E",
@@ -73,6 +73,11 @@ async function main() {
     
     const midleTokenAddress = await midle.getAddress();
     console.log("Midle Token deployed to:", midleTokenAddress , "\n\n");
+
+    console.log("Variables for verification:");
+    console.log("TGE Timestamp:", tgeTimestamp);
+    console.log("TGE + 15 Minutes Timestamp:", tgePlus15MinutesTimestamp);
+    console.log("TGE + 30 Minutes Timestamp:", tgePlus30MinutesTimestamp);
 
     // Deploy Vestings
 
