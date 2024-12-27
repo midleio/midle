@@ -1,3 +1,7 @@
+// Addresses should be in quotes
+// Amounts should be without decimals
+// Addresses should be in the same order as the amounts
+
 const airdropUsers = [];
 const airdropAmounts = [];
 const kolUsers = [];
@@ -42,10 +46,6 @@ const claimLists = {
         amounts: publicAmounts
     },
 
-    'seed': {
-        users: seedUsers,
-        amounts: seedAmounts
-    },
 };
 
 exports.claimLists = claimLists;
