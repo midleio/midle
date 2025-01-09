@@ -1,13 +1,14 @@
 const hre = require("hardhat");
 const { writeClaims } = require('./writeClaims.js');
-const deployedMidleAddress = "";
+//const deployedMidleAddress = "0x7e0d753d44d5A7492d31ffc020c9B0d07c6D05D7"; // For mainnet deployment
+const deployedMidleAddress = ""; // For local deployment
 
 let allAddresses= {};
 async function main() {
     
-    const tgeTimestamp = Date.parse("01 Jul 2024 00:00:00 GMT") / 1000;
-    const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60;
-    const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60;
+    const tgeTimestamp = Date.parse("22 Jan 2025 13:00:00 GMT") / 1000; // TGE Date 
+    const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60; // TGE + 15 Minutes
+    const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60; // TGE + 30 Minutes
 
     const tokenAllocations = {
         advisor: 40 * 10 ** 6,
@@ -161,8 +162,8 @@ function parse (num) {
     return ethers.parseEther(num.toString());
 }
 
-async function deployVestingContract(contractName, tokenAddress, tgeTimestamp) {
-    const contract = await hre.ethers.deployContract(contractName, [tokenAddress, tgeTimestamp]);
+async function deployVestingContract(contractName, tokenAddress, _tgeTimestamp) {
+    const contract = await hre.ethers.deployContract(contractName, [tokenAddress, _tgeTimestamp]);
     await contract.waitForDeployment();
     const contractAddress = await contract.getAddress();
     allAddresses[contractName] = contractAddress;
