@@ -9,6 +9,7 @@ async function main() {
     const tgeTimestamp = Date.parse("22 Jan 2025 13:00:00 GMT") / 1000; // TGE Date 
     const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60; // TGE + 15 Minutes
     const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60; // TGE + 30 Minutes
+    const tgePlus3DaysTimestamp = tgeTimestamp + 3 * 24 * 60 * 60; // TGE + 3 Days
 
     const tokenAllocations = {
         advisor: 40 * 10 ** 6,
@@ -79,6 +80,7 @@ async function main() {
     console.log("TGE Timestamp:", tgeTimestamp);
     console.log("TGE + 15 Minutes Timestamp:", tgePlus15MinutesTimestamp);
     console.log("TGE + 30 Minutes Timestamp:", tgePlus30MinutesTimestamp);
+    console.log("TGE + 3 Days Timestamp:", tgePlus3DaysTimestamp);
 
     // Deploy Vestings
 
@@ -93,7 +95,7 @@ async function main() {
 
     // Deploy Claims
 
-    const [airdropClaim , airdropClaimAddress] = await deployVestingContract("AirdropClaim", midleTokenAddress, tgePlus30MinutesTimestamp);
+    const [airdropClaim , airdropClaimAddress] = await deployVestingContract("AirdropClaim", midleTokenAddress, tgePlus3DaysTimestamp);
     const [kolClaim , kolClaimAddress] = await deployVestingContract("KolClaim", midleTokenAddress, tgePlus15MinutesTimestamp);
     const [privateClaim , privateClaimAddress] = await deployVestingContract("PrivateClaim", midleTokenAddress, tgePlus30MinutesTimestamp);
     const [publicClaim , publicClaimAddress] = await deployVestingContract("PublicClaim", midleTokenAddress, tgePlus15MinutesTimestamp);
