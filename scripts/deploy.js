@@ -1,3 +1,6 @@
+// In case of tokenomics change, change the tokenAllocations object and the vestingReceivers object, 
+// change amounts on vesting contracts, change comments on vesting contracts
+
 const hre = require("hardhat");
 const { writeClaims } = require('./writeClaims.js');
 //const deployedMidleAddress = "0x7e0d753d44d5A7492d31ffc020c9B0d07c6D05D7"; // For mainnet deployment
@@ -11,11 +14,12 @@ async function main() {
     const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60; // TGE + 30 Minutes
     const tgePlus3DaysTimestamp = tgeTimestamp + 3 * 24 * 60 * 60; // TGE + 3 Days
 
+    // Token amounts for allocations as millions
     const tokenAllocations = {
         advisor: 40 * 10 ** 6,
-        communityRewards: 300 * 10 ** 6,
-        liquidity: 120 * 10 ** 6,
-        marketing: 100 * 10 ** 6,
+        communityRewards: 250 * 10 ** 6,
+        liquidity: 220 * 10 ** 6,
+        marketing: 50 * 10 ** 6,
         team: 80 * 10 ** 6,
         treasury: 40 * 10 ** 6,
         airdrop: 20 * 10 ** 6,
@@ -39,8 +43,8 @@ async function main() {
         },
         liquidityAddress: {
             address : "0xDFfb0b8c75ecCBdaB76Af41077addf6366d51bb1",
-            tgeAmount: tokenAllocations.liquidity * 25 / 100, // 25%
-            lockAmount: tokenAllocations.liquidity - tokenAllocations.liquidity * 25 / 100, // 75%
+            tgeAmount: tokenAllocations.liquidity * 25 / 100, // 25% (55M)
+            lockAmount: tokenAllocations.liquidity - tokenAllocations.liquidity * 25 / 100, // 75% (165M)
         },
         marketingAddress: {
             address : "0xB871989554b35F0F3D4406b839DF63EA88C7757E",
