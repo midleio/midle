@@ -155,12 +155,12 @@ async function main() {
 
     console.log("\n\nWriting claims to contracts...\n\n");
     
-    await writeClaims(deployer , seedClaim , 'seed');
-    await writeClaims(deployer , strategicClaim , 'strategic');
-    await writeClaims(deployer , privateClaim , 'private');
-    await writeClaims(deployer , publicClaim , 'public');
-    await writeClaims(deployer , kolClaim , 'kol');
-    await writeClaims(deployer , airdropClaim , 'airdrop');
+    await writeClaims(deployer , seedClaim , 'seed', tokenAllocations.seed);
+    await writeClaims(deployer , strategicClaim , 'strategic', tokenAllocations.strategic);
+    await writeClaims(deployer , privateClaim , 'private', tokenAllocations.private);
+    await writeClaims(deployer , publicClaim , 'public', tokenAllocations.public);
+    await writeClaims(deployer , kolClaim , 'kol', tokenAllocations.kol);
+    await writeClaims(deployer , airdropClaim , 'airdrop', tokenAllocations.airdrop);
 
 }
 

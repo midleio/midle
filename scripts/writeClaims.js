@@ -2,8 +2,20 @@ const hre = require("hardhat");
 const { claimLists } = require("./claimLists");
 
 
-async function writeClaims( _signer , _contract,  claimListType ) {
+async function writeClaims( _signer , _contract,  claimListType, totalAllocation=0 ) {
     let claimList = claimLists[claimListType];
+    
+    const totalAmount = claimList.amounts.reduce((sum, amount) => 
+        BigInt(sum) + BigInt(hre.ethers.parseUnits(amount.toString(), "ether")), 
+        BigInt(0)
+    );
+    console.log(`\nTotal amount to be locked for ${claimListType}: ${hre.ethers.formatUnits(totalAmount, "ether")} tokens`);
+    
+    if (totalAllocation > 0) {
+        const totalAllocationBigInt = BigInt(hre.ethers.parseUnits(totalAllocation.toString(), "ether"));
+        const notLockedAmount = totalAllocationBigInt - totalAmount;
+        console.log(`Total allocation: ${hre.ethers.formatUnits(totalAllocationBigInt, "ether")}, not locked amount: ${Number(hre.ethers.formatUnits(notLockedAmount, "ether"))}`);
+    }
     
     const bulkClaimEnterCount = 300;
 
