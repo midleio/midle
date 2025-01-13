@@ -11,7 +11,7 @@ import {MidleBaseVesting} from "./MidleBaseVesting.sol";
 /// @notice This contract is used to manage the vesting of tokens, allowing users to claim their vested tokens over a period.
 contract LiquidityVesting is MidleBaseVesting {
 
-    /// @notice Constructor to initialize. LiquidityVesting total amount is 120,000,000 MIDLE, 24M $MIDLE is unlocked at TGE.
+    /// @notice Constructor to initialize. LiquidityVesting total amount is 220,000,000 MIDLE, 55M $MIDLE is unlocked at TGE.
     /// @dev The constructor takes MIDLE contract address, TGE and the locking address. 
     /// TGE release rate is based 10,000, release rate is based 21,600,000,000.
     /// @param _midleAddress Address of the MIDLE token contract
@@ -23,10 +23,10 @@ contract LiquidityVesting is MidleBaseVesting {
         0,
         0,
         40000000,
-        96000000 * 10 ** 18 
+        165000000 * 10 ** 18 
         ) {
 
         lockTokens(0xDFfb0b8c75ecCBdaB76Af41077addf6366d51bb1 , 
-        96000000 * 10 ** 18 ); // 96,000,000 $MIDLE, 24M $MIDLE is unlocked at TGE
+        165000000 * 10 ** 18 ); // 165,000,000 $MIDLE, 55M $MIDLE is unlocked at TGE
     }
 }
