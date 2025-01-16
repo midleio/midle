@@ -12,7 +12,7 @@ async function main() {
     const tgeTimestamp = Date.parse("22 Jan 2025 13:00:00 GMT") / 1000; // TGE Date 
     const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60; // TGE + 15 Minutes
     const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60; // TGE + 30 Minutes
-    const tgePlus3DaysTimestamp = tgeTimestamp + 3 * 24 * 60 * 60; // TGE + 3 Days
+    const tgePlus3DaysTimestamp = tgeTimestamp + 2 * 24 * 60 * 60; // TGE + 3 Days
 
     // Token amounts for allocations as millions
     const tokenAllocations = {
