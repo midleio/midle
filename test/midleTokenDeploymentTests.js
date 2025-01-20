@@ -170,12 +170,32 @@ describe("Midle Token Deployment Tests", function () {
     describe("Claim Contract Deployments", function () {
         let claimContracts = {};
         let claimAddresses = {};
+        let vestingContracts = {};
+        let vestingAddresses = {};
         const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60;
         const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60;
         const tgePlus3DaysTimestamp = tgeTimestamp + 2 * 24 * 60 * 60;
 
         beforeEach(async function () {
+            // Deploy vesting contracts first
+            const vestingTypes = [
+                "AdvisorVesting",
+                "CommunityRewardsVesting",
+                "LiquidityVesting",
+                "MarketingVesting",
+                "TeamVesting",
+                "TreasuryVesting"
+            ];
 
+            for (const vestingType of vestingTypes) {
+                const Contract = await ethers.getContractFactory(vestingType);
+                const contract = await Contract.deploy(await midle.getAddress(), tgeTimestamp);
+                await contract.waitForDeployment();
+                vestingContracts[vestingType] = contract;
+                vestingAddresses[vestingType] = await contract.getAddress();
+            }
+
+            // Deploy claim contracts
             const claimConfigs = {
                 "AirdropClaim": tgePlus3DaysTimestamp,
                 "KolClaim": tgePlus15MinutesTimestamp,
@@ -227,8 +247,27 @@ describe("Midle Token Deployment Tests", function () {
             }
         });
 
-        it("Should write claims using writeClaims function", async function () {
-            // Transfer tokens to all claim contracts first
+        it("Should write claims, show vesting info, and allow claims", async function () {
+            // Transfer tokens to vesting contracts first
+            const vestingMap = {
+                "advisorAddress": "AdvisorVesting",
+                "communityRewardsAddress": "CommunityRewardsVesting",
+                "liquidityAddress": "LiquidityVesting",
+                "marketingAddress": "MarketingVesting",
+                "teamAddress": "TeamVesting",
+                "treasuryAddress": "TreasuryVesting"
+            };
+
+            for (const [key, value] of Object.entries(vestingReceivers)) {
+                const contractName = vestingMap[key];
+                if (!contractName || !vestingAddresses[contractName]) continue;
+                
+                const contractAddress = vestingAddresses[contractName];
+                const lockAmount = ethers.parseEther(value.lockAmount.toString());
+                await midle.transfer(contractAddress, lockAmount);
+            }
+
+            // Transfer tokens to all claim contracts
             for (const [name, amount] of Object.entries(tokenAllocations)) {
                 if (["airdrop", "kol", "private", "public", "seed", "strategic"].includes(name)) {
                     const transferAmount = ethers.parseEther(amount.toString());
@@ -237,16 +276,77 @@ describe("Midle Token Deployment Tests", function () {
                 }
             }
 
-            // Write claims using the actual writeClaims function from scripts
-            await writeClaims(owner, claimContracts["SeedClaim"], 'seed', tokenAllocations.seed);
-            await writeClaims(owner, claimContracts["StrategicClaim"], 'strategic', tokenAllocations.strategic);
-            await writeClaims(owner, claimContracts["PrivateClaim"], 'private', tokenAllocations.private);
-            await writeClaims(owner, claimContracts["PublicClaim"], 'public', tokenAllocations.public);
-            await writeClaims(owner, claimContracts["KolClaim"], 'kol', tokenAllocations.kol);
-            await writeClaims(owner, claimContracts["AirdropClaim"], 'airdrop', tokenAllocations.airdrop);
+            // Write all claims in one go
+            const claimTypes = ['seed', 'strategic', 'private', 'public', 'kol', 'airdrop'];
+            for (const claimType of claimTypes) {
+                const contractName = claimType.charAt(0).toUpperCase() + claimType.slice(1) + "Claim";
+                await writeClaims(owner, claimContracts[contractName], claimType, tokenAllocations[claimType]);
+            }
 
-             // Sample users from each claim type (first user from each list)
-             const sampleUsers = {
+            console.log("\nTGE is", new Date(Number(tgeTimestamp) * 1000).toLocaleString());
+            
+            // Check and claim from vesting contracts first
+            console.log("\nVESTING CONTRACT CLAIMS");
+            for (const [key, value] of Object.entries(vestingReceivers)) {
+                const contractName = vestingMap[key];
+                if (!contractName || !vestingAddresses[contractName]) continue;
+
+                const contract = vestingContracts[contractName];
+                const vestingInfo = await contract.getNextVestingInfo(value.address);
+                
+                console.log(`\nVesting Info for ${contractName}:`);
+                console.log("Next Vesting Time:", new Date(Number(vestingInfo[0]) * 1000).toLocaleString());
+                console.log("Next Total Vesting Amount:", ethers.formatEther(vestingInfo[1]));
+                console.log("Total Amount:", ethers.formatEther(vestingInfo[2]));
+                console.log("Claimed So Far:", ethers.formatEther(vestingInfo[3]));
+                console.log("Claimable Amount Now:", ethers.formatEther(vestingInfo[4]));
+
+                // Test claiming if there's a claimable amount
+                if (vestingInfo[4] > 0n) {
+                    // Fund the account with ETH for gas
+                    await owner.sendTransaction({
+                        to: value.address,
+                        value: ethers.parseEther("1.0")
+                    });
+                    
+                    // Impersonate the vesting receiver
+                    await hre.network.provider.request({
+                        method: "hardhat_impersonateAccount",
+                        params: [value.address],
+                    });
+                    const signer = await ethers.provider.getSigner(value.address);
+
+                    // Get balance before claim
+                    const balanceBefore = await midle.balanceOf(value.address);
+                    
+                    // Claim tokens
+                    await contract.connect(signer).claim();
+                    
+                    // Get balance after claim
+                    const balanceAfter = await midle.balanceOf(value.address);
+                    
+                    console.log(`${contractName} claimed ${ethers.formatEther(vestingInfo[4])} tokens`);
+                    console.log(`Balance before: ${ethers.formatEther(balanceBefore)}`);
+                    console.log(`Balance after: ${ethers.formatEther(balanceAfter)}`);
+                    expect(balanceAfter - balanceBefore).to.equal(vestingInfo[4]);
+
+                    // Stop impersonating
+                    await hre.network.provider.request({
+                        method: "hardhat_stopImpersonatingAccount",
+                        params: [value.address],
+                    });
+                } else {
+                    console.log(`Nothing to claim for ${contractName} vesting`);
+                }
+            }
+            
+            // Check and claim from claim contracts
+            console.log("\nCLAIM CONTRACT CLAIMS");
+
+            // Log current block timestamp
+            const currentBlock = await ethers.provider.getBlock('latest');
+            console.log("\nCurrent block timestamp:", new Date(Number(currentBlock.timestamp) * 1000).toLocaleString());
+            const sampleUsers = {
                 "AirdropClaim": "0xa00e80e8b2a170e5a53f927f8c312c02a6ee5a11",
                 "KolClaim": "0xE484A833e2b0516F5b3F851fDE3F462B365716Da",
                 "PrivateClaim": "0xb160243b352F1c86D753147F9D15Be7A318C8D53",
@@ -255,6 +355,10 @@ describe("Midle Token Deployment Tests", function () {
                 "StrategicClaim": "0x63174dadbe7f9a816da937914b8a07a4aafd6cf4"
             };
 
+
+            console.log("\nTGE is", new Date(Number(tgeTimestamp) * 1000).toLocaleString());
+            
+            
             console.log("\nTGE is", new Date(Number(tgeTimestamp) * 1000).toLocaleString());
             
             // Check vesting info for each claim type
@@ -268,8 +372,47 @@ describe("Midle Token Deployment Tests", function () {
                 console.log("Total Amount:", ethers.formatEther(vestingInfo[2]));
                 console.log("Claimed So Far:", ethers.formatEther(vestingInfo[3]));
                 console.log("Claimable Amount Now:", ethers.formatEther(vestingInfo[4]));
+
+                // Test claiming if there's a claimable amount
+                if (vestingInfo[4] > 0n) {
+                    // Fund the account with ETH for gas
+                    await owner.sendTransaction({
+                        to: userAddress,
+                        value: ethers.parseEther("1.0")
+                    });
+                    
+                    // Impersonate the user
+                    await hre.network.provider.request({
+                        method: "hardhat_impersonateAccount",
+                        params: [userAddress],
+                    });
+                    const signer = await ethers.provider.getSigner(userAddress);
+
+                    // Get balance before claim
+                    const balanceBefore = await midle.balanceOf(userAddress);
+                    
+                    // Claim tokens
+                    await contract.connect(signer).claim();
+                    
+                    // Get balance after claim
+                    const balanceAfter = await midle.balanceOf(userAddress);
+                    
+                    console.log(`${contractName} user claimed ${ethers.formatEther(vestingInfo[4])} tokens`);
+                    console.log(`Balance before: ${ethers.formatEther(balanceBefore)}`);
+                    console.log(`Balance after: ${ethers.formatEther(balanceAfter)}`);
+                    expect(balanceAfter - balanceBefore).to.equal(vestingInfo[4]);
+
+                    // Stop impersonating
+                    await hre.network.provider.request({
+                        method: "hardhat_stopImpersonatingAccount",
+                        params: [userAddress],
+                    });
+                } else {
+                    console.log(`Nothing to claim for ${contractName} user`);
+                }
             }
 
+            // Check random addresses from each claim list
             const getRandomIndices = (max, count) => {
                 const indices = new Set();
                 while (indices.size < count) {
@@ -278,7 +421,6 @@ describe("Midle Token Deployment Tests", function () {
                 return Array.from(indices);
             };
 
-            // Check 7 random addresses from each claim list
             for (const [claimType, list] of Object.entries(claimLists)) {
                 const contractName = claimType.charAt(0).toUpperCase() + claimType.slice(1) + "Claim";
                 const contract = claimContracts[contractName];
@@ -292,7 +434,5 @@ describe("Midle Token Deployment Tests", function () {
                 }
             }
         });
-
-      
     });
 });
