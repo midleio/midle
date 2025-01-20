@@ -12,6 +12,12 @@ npx hardhat run scripts/deploy.js --network bsc_testnet
 npx hardhat run scripts/deploy.js --network bsc
 
 
+- Verify Testnet
+npx hardhat run scripts/verify.js --network bsc_testnet
+
+- Verify Mainnet
+npx hardhat run scripts/verify.js --network bsc
+
 ### Cliff Calculation
 
 The cliff calculation in the vesting contracts follows these rules:
