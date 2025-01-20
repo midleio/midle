@@ -23,7 +23,7 @@ async function main() {
         team: 80 * 10 ** 6,
         treasury: 40 * 10 ** 6,
         airdrop: 20 * 10 ** 6,
-        kol: 8088889, // 6,666M
+        kol: 9755556, // 9.75M
         private: 100 * 10 ** 6,
         public: 15 * 10 ** 6,
         seed: 97 * 10 ** 6,
@@ -99,6 +99,7 @@ async function main() {
 
     // Deploy Claims
 
+    console.log("Airdrop claim deploy args : ", midleTokenAddress, tgePlus3DaysTimestamp)
     const [airdropClaim , airdropClaimAddress] = await deployVestingContract("AirdropClaim", midleTokenAddress, tgePlus3DaysTimestamp);
     const [kolClaim , kolClaimAddress] = await deployVestingContract("KolClaim", midleTokenAddress, tgePlus15MinutesTimestamp);
     const [privateClaim , privateClaimAddress] = await deployVestingContract("PrivateClaim", midleTokenAddress, tgePlus30MinutesTimestamp);
