@@ -21,24 +21,24 @@
       "strategicClaim": ""
     },
     "bsc_testnet": {
-      "token": "0xbc207071a8B69c562B35a8708D55b1369a367D40",
-      "tgeTimestamp": "1737550800",
-      "tgePlus15MinutesTimestamp": "1737551700",
-      "tgePlus30MinutesTimestamp": "1737552600",
-      "tgePlus3DaysTimestamp": "1737723600",
+      "token": "0x7a21966e524fB72cDae36d60271551BAef05dB54",
+      "tgeTimestamp": "1737464400",
+      "tgePlus15MinutesTimestamp": "1737465300",
+      "tgePlus30MinutesTimestamp": "1737466200",
+      "tgePlus3DaysTimestamp": "1737637200",
 
-      "advisorVesting": "0xb86823Ae659D2161612Cc77B2d83d2949ca33829",
-      "communityRewardsVesting": "0x15bF43936BfaDD8a64c8499595537d4836a05bf7",
-      "liquidityVesting": "0x0be503935e5e08942cFc72046a7B4212A1171d6F",
-      "marketingVesting": "0xDCEc61b0196DE5dF3c92C8d41b485906284c0888",
-      "teamVesting": "0xF951FF98663F27F7DAaa58A10c414bB509bBb272",
-      "treasuryVesting": "0x089601950f01e07E1925CDD3829e903610381DC7",
+      "advisorVesting": "0x87AaE8D233e9952b909C6c8d5e0B80541cF0bd10",
+      "communityRewardsVesting": "0xC5B19c59AF49C2a13Cb799E6fb9251D343596A36",
+      "liquidityVesting": "0xD70B1a7Fe877CB8d28909f76cc122456e413396a",
+      "marketingVesting": "0x827265BDa6270B0E07504e3D5fB0C46C874C74CA",
+      "teamVesting": "0x9eEa0A31A2632Cd9ABA8dd041E02A2589a4F67b2",
+      "treasuryVesting": "0xA52a986524d3Aa50A3afb76525d6ec3505D958E8",
 
-      "airdropClaim": "0x594bC3673434D3949BC521FC134C82D09A5a133F",
-      "kolClaim": "0xe912c66465870Cf8b84B045aA117Ee80316F7E85",
-      "privateClaim": "0x644037489778c23d2eDd092F3e0670401Cf5ba43" ,
-      "publicClaim": "0x42a5A71d6242398EA3c546Fb82dcC4D815cdd63b",
-      "seedClaim": "0xb1C804a5D147DE7a82eABD656524b9a24b495B56",
-      "strategicClaim": "0xE68e218B8C045f391a3437670dEd89071cee2966"
+      "airdropClaim": "0xFD0c50e4850B2E3a52CefbF41a49B4f58679a5F9",
+      "kolClaim": "0x7105BEEAefA1CD708BF6EeCfBA8578Db09F48295",
+      "privateClaim": "0xf2d73f81BE557422a0d7e597d7203143cFfe8DEB" ,
+      "publicClaim": "0xe170774cC309b60594408fA58A4d71352f154F42",
+      "seedClaim": "0x0A8811D1cB176695C4b59E48CBD960CC314cbCEf",
+      "strategicClaim": "0xaF00F5C0Da81AbF2093a4189D694EFed63f43828"
     }
   }
