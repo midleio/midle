@@ -11,7 +11,7 @@ import {MidleBaseClaim} from "./MidleBaseClaim.sol";
 /// @notice This contract is used to manage the vesting of tokens, allowing users to claim their vested tokens over a period.
 contract StrategicClaim is MidleBaseClaim {
 
-    /// @notice Constructor to initialize. Total claim amount is 25,000,000 MIDLE.
+    /// @notice Constructor to initialize. Total claim amount is 3,000,000 MIDLE.
     /// @dev The constructor takes MIDLE contract address and TGE.
     /// TGE release rate is based 10,000, release rate is based 21,600,000,000.
     /// @param _midleAddress Address of the MIDLE token contract
@@ -23,7 +23,7 @@ contract StrategicClaim is MidleBaseClaim {
         900,
         1,
         90000000,
-        25000000 * 10 ** 18
+        3000000 * 10 ** 18
         ) {}
 
     
