@@ -18,12 +18,12 @@ async function main() {
     const tokenAllocations = {
         advisor: 40 * 10 ** 6,
         communityRewards: 240 * 10 ** 6,
-        liquidity: 210 * 10 ** 6,
+        liquidity: 205 * 10 ** 6,
         marketing: 50 * 10 ** 6,
         team: 80 * 10 ** 6,
         treasury: 40 * 10 ** 6,
         airdrop: 20 * 10 ** 6,
-        kol: 6666667, // 6,666M
+        kol: 8088889, // 6,666M
         private: 100 * 10 ** 6,
         public: 15 * 10 ** 6,
         seed: 97 * 10 ** 6,
