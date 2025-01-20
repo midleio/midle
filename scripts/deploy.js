@@ -12,22 +12,22 @@ async function main() {
     const tgeTimestamp = Date.parse("22 Jan 2025 13:00:00 GMT") / 1000; // TGE Date 
     const tgePlus15MinutesTimestamp = tgeTimestamp + 15 * 60; // TGE + 15 Minutes
     const tgePlus30MinutesTimestamp = tgeTimestamp + 30 * 60; // TGE + 30 Minutes
-    const tgePlus3DaysTimestamp = tgeTimestamp + 2 * 24 * 60 * 60; // TGE + 3 Days
+    const tgePlus3DaysTimestamp = tgeTimestamp + 2 * 24 * 60 * 60; // TGE + 2 Days to get in 3 days, 
 
     // Token amounts for allocations as millions
     const tokenAllocations = {
         advisor: 40 * 10 ** 6,
-        communityRewards: 250 * 10 ** 6,
-        liquidity: 220 * 10 ** 6,
+        communityRewards: 240 * 10 ** 6,
+        liquidity: 210 * 10 ** 6,
         marketing: 50 * 10 ** 6,
         team: 80 * 10 ** 6,
         treasury: 40 * 10 ** 6,
         airdrop: 20 * 10 ** 6,
-        kol: 20 * 10 ** 6,
+        kol: 6666667, // 6,666M
         private: 100 * 10 ** 6,
-        public: 60 * 10 ** 6,
-        seed: 95 * 10 ** 6,
-        strategic: 25 * 10 ** 6
+        public: 15 * 10 ** 6,
+        seed: 97 * 10 ** 6,
+        strategic: 3 * 10 ** 6
     };
   
     const vestingReceivers = {
@@ -43,8 +43,8 @@ async function main() {
         },
         liquidityAddress: {
             address : "0xDFfb0b8c75ecCBdaB76Af41077addf6366d51bb1",
-            tgeAmount: tokenAllocations.liquidity * 25 / 100, // 25% (55M)
-            lockAmount: tokenAllocations.liquidity - tokenAllocations.liquidity * 25 / 100, // 75% (165M)
+            tgeAmount: tokenAllocations.liquidity * 0 / 100, // 0% // Already Sent
+            lockAmount: tokenAllocations.liquidity - tokenAllocations.liquidity * 0 / 100, // 100% Already Sent
         },
         marketingAddress: {
             address : "0xB871989554b35F0F3D4406b839DF63EA88C7757E",
