@@ -6,19 +6,19 @@
       "tgePlus30MinutesTimestamp": "1737552600",
       "tgePlus3DaysTimestamp": "1737723600",
 
-      "advisorVesting": "",
-      "communityRewardsVesting": "",
-      "liquidityVesting": "",
-      "marketingVesting": "",
-      "teamVesting": "",
-      "treasuryVesting": "",
+      "advisorVesting": "0x64904FA4b1891C567FEE6250bC1FEDCF260c675A",
+      "communityRewardsVesting": "0xf178c5664FCF29648E9D374EE2F2e06336c846be",
+      "liquidityVesting": "0x8fa1503Ce0efEf440505f5CC209De23929912021",
+      "marketingVesting": "0x92563824e0fE5Cb4BA90b784216Bdb8F8446B12D",
+      "teamVesting": "0xb7Cf91469eBD530fd8993fA0c845E3afc0b7D5A6",
+      "treasuryVesting": "0x6bABef2108c95e00b760b16E75c0B4Aa3977ab9F",
 
-      "airdropClaim": "",
-      "kolClaim": "",
-      "privateClaim": "" ,
-      "publicClaim": "",
-      "seedClaim": "",
-      "strategicClaim": ""
+      "airdropClaim": "0xea7d56864bD869Bf9592Df0Db81767840B67FE46",
+      "kolClaim": "0x6556394C65aB4c17Bd12A0e4d71275303B89B1f6",
+      "privateClaim": "0x0d96fd804C461026b8e44Ac507De72d5Ed03a978" ,
+      "publicClaim": "0x599231d158D15d089bB89d286B772DD3C51245BC",
+      "seedClaim": "0xd4979336836011B7bB423390a45AE590b49785c8",
+      "strategicClaim": "0x669E5f0B7585619537F5e6deD73724860476064b"
     },
     "bsc_testnet": {
       "token": "0x7a21966e524fB72cDae36d60271551BAef05dB54",

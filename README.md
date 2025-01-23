@@ -18,6 +18,8 @@ npx hardhat run scripts/verify.js --network bsc_testnet
 - Verify Mainnet
 npx hardhat run scripts/verify.js --network bsc
 
+npx hardhat verify 0xC544b928001969a68740fef8F24e23474a5d0182 --contract contracts/claim/AirdropClaim.sol:AirdropClaim 0x73622A83Ca19F78f6B90a273eC5c88FEB0f71149 1737723600  --network bsc_testnet
+
 ### Cliff Calculation
 
 The cliff calculation in the vesting contracts follows these rules:

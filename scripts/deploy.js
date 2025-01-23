@@ -3,8 +3,8 @@
 
 const hre = require("hardhat");
 const { writeClaims } = require('./writeClaims.js');
-//const deployedMidleAddress = "0x7e0d753d44d5A7492d31ffc020c9B0d07c6D05D7"; // For mainnet deployment
-const deployedMidleAddress = ""; // For local deployment
+const deployedMidleAddress = "0x7e0d753d44d5A7492d31ffc020c9B0d07c6D05D7"; // For mainnet deployment - change
+//const deployedMidleAddress = ""; // For local deployment
 
 let allAddresses= {};
 async function main() {

@@ -23,6 +23,7 @@ module.exports = {
         ? [process.env.DEPLOY_PRIVATE_KEY]
         : [],
       chainId: 97,
+      gasPrice: 1200000000,
     },
     bsc: {
       url: "https://bsc-dataseed1.binance.org/",
@@ -30,6 +31,7 @@ module.exports = {
         ? [process.env.DEPLOY_PRIVATE_KEY]
         : [],
       chainId: 56,
+      gasPrice: 1200000000,
     },
   },
   etherscan: {
